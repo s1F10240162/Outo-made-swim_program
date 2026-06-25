@@ -22,7 +22,8 @@ class MainWindow(QMainWindow):
 
         # ウィンドウ設定
         self.setWindowTitle(APP_NAME)
-        self.setGeometry(100, 100, 500, 400)
+        self.setMinimumSize(700, 550)
+        self.resize(800, 600)
         self.setStyleSheet(MAIN_WINDOW)
 
         # スタックウィジェットのセットアップ

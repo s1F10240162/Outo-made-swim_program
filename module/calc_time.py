@@ -6,8 +6,9 @@ from module.send_message import send_slack_message
 
 def parse_time_str(time_str: str) -> float:
     try:
-        time_str = time_str.strip()
-        if not time_str or time_str == "0":
+        # カンマをピリオドに置換
+        time_str = time_str.strip().replace(",", ".")
+        if not time_str or time_str == "0" or time_str == "0.0":
             return 999999.9
         if ":" in time_str:
             parts = time_str.split(":")
@@ -21,8 +22,9 @@ def parse_time_str(time_str: str) -> float:
         else:
             return float(time_str)
     except Exception as e:
-        logging.error(f"parse_time_strでエラー: {e}", exc_info=True)
-        send_slack_message(os.getenv("APP_NAME", "AquaProgrammer"), f"parse_time_strでエラー: {e}\n{traceback.format_exc()}")
+        logging.error(f"parse_time_strでエラー: {e} (元文字列: {time_str})", exc_info=True)
+        # エラーで完全に落とさずに無効なタイムとして処理するためにデフォルト値を返すようにするか、
+        # 呼び出し元が適切にハンドリングできるように raise します。ここでは既存動作に合わせて raise します。
         raise
 
 if __name__ == "__main__":

@@ -49,10 +49,12 @@ def get_player_id(csv_path: str, event: Tuple[str, int], category: str = "mixed"
             return []
 
         # 選手データの作成
+        header = data[0]
         players = []
         for row in data[1:]:  # ヘッダーをスキップ
             try:
-                player = create_player_from_row(row)
+                row_dict = dict(zip(header, row))
+                player = create_player_from_row(row_dict)
                 players.append(player)
             except ValueError as e:
                 logger.warning(f"選手データの作成に失敗しました: {e}")
@@ -103,10 +105,12 @@ def get_player_info_by_id(player_id_list: List[str], csv_path: str) -> List[Tupl
             return []
 
         # 選手データをID別の辞書に格納
+        header = data[0]
         players: Dict[str, PlayerData] = {}
         for row in data[1:]:
             try:
-                player = create_player_from_row(row)
+                row_dict = dict(zip(header, row))
+                player = create_player_from_row(row_dict)
                 players[player.id] = player
             except ValueError as e:
                 logger.warning(f"選手データの作成に失敗しました: {e}")
@@ -159,10 +163,12 @@ def get_players_by_event(csv_path: str, event: Tuple[str, int], category: str = 
             return []
 
         # 選手データの作成
+        header = data[0]
         players = []
         for row in data[1:]:  # ヘッダーをスキップ
             try:
-                player = create_player_from_row(row)
+                row_dict = dict(zip(header, row))
+                player = create_player_from_row(row_dict)
                 players.append(player)
             except ValueError as e:
                 logger.warning(f"選手データの作成に失敗しました: {e}")

@@ -1,6 +1,5 @@
 from PySide6.QtWidgets import QListWidget, QWidget, QVBoxLayout, QPushButton
 from PySide6.QtCore import Signal
-from GUI.styles.stylesheet import FILE_LIST_WIDGET, BUTTON_DEFAULT
 
 class FileListWidget(QWidget):
     """ファイルリストを表示・管理するコンポーネント"""
@@ -12,11 +11,10 @@ class FileListWidget(QWidget):
         
         # ファイルリスト表示部分
         self.file_list = QListWidget(self)
-        self.file_list.setStyleSheet(FILE_LIST_WIDGET)
         
         # OKボタン
         self.ok_button = QPushButton("OK (コピー実行)", self)
-        self.ok_button.setStyleSheet(BUTTON_DEFAULT)
+        self.ok_button.setMinimumHeight(45)
         self.ok_button.clicked.connect(self._handle_copy_request)
         
         # レイアウト設定

@@ -21,6 +21,7 @@ class DragDropWindow(QWidget):
     
     def __init__(self, result_folder_path, parent=None):
         super().__init__(parent)
+        self.setObjectName("DragDropWindow")
         self.result_folder_path = result_folder_path  # 出力先パス
         self.input_folder_path = INPUT_DATA_FOLDER    # 入力先パス
         self.file_manager = FileManager(self.input_folder_path)  # 入力用フォルダにコピー
@@ -39,19 +40,7 @@ class DragDropWindow(QWidget):
         # 戻るボタンの作成
         self.back_button = QPushButton("戻る")
         self.back_button.setCursor(Qt.PointingHandCursor)
-        self.back_button.setStyleSheet("""\
-            QPushButton {
-                background-color: #95a5a6;
-                border: none;
-                border-radius: 5px;
-                color: white;
-                font-size: 14px;
-                padding: 5px 15px;
-            }
-            QPushButton:hover {
-                background-color: #7f8c8d;
-            }
-        """)
+        self.back_button.setObjectName("SecondaryButton")
         self.back_button.clicked.connect(self.on_back_button_clicked)
 
         # ボタンレイアウト
@@ -122,6 +111,29 @@ class DragDropWindow(QWidget):
     def show_completion(self):
         """ 処理完了画面を表示する """
         self.stacked_widget.setCurrentIndex(2)
+        try:
+            import os
+            import subprocess
+            
+            abs_path = os.path.abspath(self.result_folder_path)
+            logging.info(f"[AutoOpen] Target result folder path: {abs_path}")
+            
+            if not os.path.exists(abs_path):
+                logging.warning(f"[AutoOpen] Folder does not exist, creating it: {abs_path}")
+                os.makedirs(abs_path, exist_ok=True)
+                
+            if os.path.exists(abs_path):
+                try:
+                    os.startfile(abs_path)
+                    logging.info("[AutoOpen] Opened folder using os.startfile")
+                except Exception as startfile_err:
+                    logging.warning(f"[AutoOpen] os.startfile failed: {startfile_err}. Trying explorer fallback...")
+                    subprocess.Popen(['explorer', abs_path], shell=True)
+                    logging.info("[AutoOpen] Opened folder using explorer process fallback")
+            else:
+                logging.error(f"[AutoOpen] Cannot find or create result folder path: {abs_path}")
+        except Exception as e:
+            logging.error(f"エクスプローラーでフォルダを開く際にエラーが発生しました: {e}", exc_info=True)
     
     @Slot(str)
     def show_error(self, error_message):

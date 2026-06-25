@@ -11,24 +11,23 @@ from module.send_message import send_slack_message
 from module.player_data import PlayerData
 from module.event_utils import EVENT_NAMES, parse_event_name
 
-def create_player_from_row(row: list[str]) -> PlayerData:
+def create_player_from_row(row_dict: dict[str, str]) -> PlayerData:
     try:
         player = PlayerData(
-            id=row[-1],
-            name=row[1],
-            hurigana=row[2].replace("\u3000", " "),
-            team=row[3],
-            grade=row[4],
-            sex=row[5]
+            id=str(row_dict.get("ID") or row_dict.get("No") or row_dict.get("Unnamed: 0") or "").strip(),
+            name=str(row_dict.get("氏名") or "").strip(),
+            hurigana=str(row_dict.get("ﾌﾘｶﾞﾅ") or "").replace("\u3000", " ").strip(),
+            team=str(row_dict.get("学校名") or "").strip(),
+            grade=str(row_dict.get("学年") or "").strip(),
+            sex=str(row_dict.get("性別") or "").strip()
         )
-        for col_idx, ev_name in enumerate(EVENT_NAMES, start=6):
-            if col_idx >= len(row):
-                break
-            record = row[col_idx].strip()
-            if not record:
-                continue
-            stroke, distance = parse_event_name(ev_name)
-            player.set_time(stroke, distance, record)
+        for ev_name in EVENT_NAMES:
+            if ev_name in row_dict:
+                record = str(row_dict[ev_name]).strip()
+                if not record or record == "nan" or record == "0" or record == "0.0" or record == "0:00.00":
+                    continue
+                stroke, distance = parse_event_name(ev_name)
+                player.set_time(stroke, distance, record)
         return player
     except Exception as e:
         logging.error(f"create_player_from_rowでエラー: {e}", exc_info=True)
