@@ -36,15 +36,6 @@ def main(result_data_file=None, input_data_file=None, merged_csv_data_file=None,
     例外:
         Exception: 処理中に発生した例外はログに記録され、処理を続行します
     """
-    # 環境変数の取得（グローバル変数として管理）
-    SLACK_TOKEN = os.getenv("SLACK_TOKEN")
-    SLACK_CHANNEL = os.getenv("SLACK_CHANNEL")
-    APP_NAME = os.getenv("APP_NAME", "AquaProgrammer")
-    input_data_file = os.getenv("INPUT_DATA_FILE", input_data_file)
-    merged_csv_data_file = os.getenv("MERGED_CSV_DATA_FILE", merged_csv_data_file)
-    result_data_file = os.getenv("RESULT_DATA_FILE", result_data_file)
-    template_file = os.getenv("TEMPLATE_FILE", template_file)
-
     try:
         logger.info("Excelファイルの変換と結合を開始します")
         from scripts.ExcelToMergedCSV import main as ExcelToMergedCSV_main
@@ -58,6 +49,7 @@ def main(result_data_file=None, input_data_file=None, merged_csv_data_file=None,
         fill_name(result_data_file, merged_csv_data_file)
         logger.info("処理が正常に完了しました")
         return True
+
     except FileNotFoundError as e:
         logger.error(f"ファイルが見つかりません: {e}")
         logger.error(traceback.format_exc())
@@ -76,5 +68,4 @@ def main(result_data_file=None, input_data_file=None, merged_csv_data_file=None,
 
 if __name__ == "__main__":
     from GUI.apps import main as GUI_main
-    # GUI_main()
-    main()
+    GUI_main()
