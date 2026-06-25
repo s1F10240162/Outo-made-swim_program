@@ -18,50 +18,41 @@ class HomeWindow(QWidget):
     
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.setObjectName("HomeWindow")
 
         # レイアウト設定
         layout = QVBoxLayout()
-        layout.setContentsMargins(30, 40, 30, 40)
-        layout.setSpacing(20)
+        layout.setContentsMargins(50, 50, 50, 50)
+        layout.setSpacing(25)
 
         # タイトルラベル
         title_label = QLabel(APP_NAME)
         title_label.setAlignment(Qt.AlignCenter)
         title_label.setStyleSheet("""        
-            font-size: 36px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 30px;
+            font-size: 42px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 5px;
         """)
         
         # サブタイトルラベル
         subtitle_label = QLabel("水泳競技プログラム自動作成支援ツール")
         subtitle_label.setAlignment(Qt.AlignCenter)
         subtitle_label.setStyleSheet("""        
-            font-size: 18px;
-            color: #34495e;
-            margin-bottom: 40px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #64748b;
+            margin-bottom: 30px;
         """)
 
         # ボタン作成
         start_button = QPushButton("プログラム製作を開始する")
         start_button.setCursor(Qt.PointingHandCursor)
-        start_button.setMinimumHeight(50)
+        start_button.setMinimumHeight(52)
         start_button.setStyleSheet("""        
             QPushButton {
-                background-color: #3498db;
-                border: none;
-                border-radius: 5px;
-                color: white;
                 font-size: 16px;
-                font-weight: bold;
-                padding: 10px 20px;
-            }
-            QPushButton:hover {
-                background-color: #2980b9;
-            }
-            QPushButton:pressed {
-                background-color: #1c6ea4;
+                border-radius: 8px;
             }
         """)
         
