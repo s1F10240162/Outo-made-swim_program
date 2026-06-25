@@ -48,8 +48,8 @@ def send_slack_message(system_name: str, text: str):
 
         try:
             response = requests.post(url, headers=headers, json=data)
-            response.raise_for_status()
-            logging.info(f"Slack 通知成功: {response.text}")
+            # response.raise_for_status()
+            # logging.info(f"Slack 通知成功: {response.text}")
         except requests.exceptions.RequestException as e:
             logging.error(f"Slack 通知失敗: {e}", exc_info=True)
             # ここで例外を再送出しない（通知失敗は致命的でないため）
