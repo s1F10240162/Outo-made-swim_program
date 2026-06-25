@@ -14,10 +14,7 @@ from module.send_message import send_slack_message
 # CSVファイルの列順に対応するイベント名をあらかじめ用意する
 # 7列目～21列目(インデックス6～20)がこの順番である想定
 EVENT_NAMES = [
-    "200IM",  "200Ba",  "200Br",  "200Fly", "200Fr",
-    "50Ba",   "50Br",   "50Fly",  "50Fr",
-    "400IM",  "400Fr",
-    "100Ba",  "100Br",  "100Fly", "100Fr"
+    "100Ba", "100Fly", "200Fr", "100Br", "50Fr", "400Fr", "50Ba", "200IM", "200Ba", "50Fly", "200Br", "200Fly", "100Fr", "50Br", "400IM"
 ]
 
 def parse_event_name(event_name: str) -> tuple[str, int]:
